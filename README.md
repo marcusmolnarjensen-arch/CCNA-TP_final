@@ -1,83 +1,99 @@
 # CCNA-TP_final
 ### Etape 1 (je mets une croix en face de la bonne reponse)
-# Catégorie A
-A1. OSPF appartient à quelle catégorie de protocole de routage ?(B)
-a) Vecteur de distance
-b) État de liens ----
-c) Hybride
-d) Vecteur de chemin
+# CCNA-TP_final
 
-A2. Quel algorithme utilise OSPF pour calculer le meilleur chemin ?(B)
-a) Bellman-Ford
-b) Dijkstra (SPF)  ----
-c) DUAL
-d) A*
+### Étape 1
 
-A3. Quelle est la bande passante de référence par défaut utilisée pour calculer le coût OSPF ?(B)
-a) 10 Mbps
-b) 100 Mbps  ----
-c) 1000 Mbps 
-d) 10000 Mbps
+### A1. OSPF appartient à quelle catégorie de protocole de routage ?
 
-A4. Quelle commande modifie la bande passante de référence utilisée dans le calcul du coût OSPF ?(A)
-a) bandwidth reference  ----
-b) auto-cost reference-bandwidth
-c) ip ospf cost
-d) reference-bandwidth ospf
+- a) Vecteur de distance
+- b) État de liens
+- c) Hybride
+- d) Vecteur de chemin **X**
 
-A5. Comment est déterminé le Router-ID si aucun n'est configuré manuellement ?(B)
-a) IP la plus basse de toutes les interfaces
-b) IP la plus haute des interfaces actives, priorité aux loopbacks  ----
-c) Adresse MAC la plus haute
-d) Toujours 0.0.0.0
+### A2. Quel algorithme utilise OSPF pour calculer le meilleur chemin ?
 
-A6. Pourquoi recommande-t-on une interface loopback pour fixer le Router-ID ?(D)
-a) Elle est toujours active, ce qui le stabilise
-b) Elle est plus rapide
-c) Elle consomme moins de mémoire
-d) C'est obligatoire pour OSPF  ----
+- a) Bellman-Ford
+- b) Dijkstra (SPF) **X**
+- c) DUAL
+- d) A*
 
-A7. Quel est le rôle du DR (Designated Router) sur un segment multi-accès ?(B)
-a) Répartir la charge du trafic
-b) Centraliser les échanges LSA pour réduire le nombre d'adjacences  ----
-c) Chiffrer le trafic OSPF
-d) Remplacer le Router-ID
+### A3. Quelle est la bande passante de référence par défaut utilisée pour calculer le coût OSPF ?
 
-A8. Sur un lien point-à-point, l'élection DR/BDR a-t-elle lieu ?(C)
-a) Oui, systématiquement 
-b) Non, elle n'a pas de sens sur ce type de lien
-c) Seulement si configurée manuellement  ----
-d) Seulement en IPv6
+- a) 10 Mbps
+- b) 100 Mbps **X**
+- c) 1000 Mbps
+- d) 10000 Mbps
 
-A9. Valeurs par défaut des timers Hello/Dead sur un réseau broadcast (Ethernet) ?(A)
-a) 5s / 20s  ----
-b) 10s / 40s
-c) 30s / 120s
-d) 60s / 180s
+### A4. Quelle commande modifie la bande passante de référence utilisée dans le calcul du coût OSPF ?
 
-A10. Que se passe-t-il si les timers Hello/Dead diffèrent entre deux voisins ?(B)
-a) L'adjacence se forme quand même
-b) L'adjacence ne peut pas se former  ----
-c) Seul le Hello timer compte
-d) OSPF ignore cette différence
+- a) bandwidth reference **X**
+- b) auto-cost reference-bandwidth
+- c) ip ospf cost
+- d) reference-bandwidth ospf
 
-A11. Quel état de voisinage OSPF indique une adjacence pleinement établie ?(C)
-a) 2-Way
-b) ExStart
-c) Full  ----
-d) Loading
+### A5. Comment est déterminé le Router-ID si aucun n'est configuré manuellement ?
 
-A12. Quel type de LSA décrit les liens directement connectés d'un routeur ?(C)
-a) Router LSA (type 1)
-b) Network LSA
-c) Summary LSA  ----
-d) External LSA
+- a) IP la plus basse de toutes les interfaces
+- b) IP la plus haute des interfaces actives, priorité aux loopbacks **X**
+- c) Adresse MAC la plus haute
+- d) Toujours 0.0.0.0
 
-A13. Quelle commande affiche l'état des adjacences OSPF ? (B)
-a) show ip ospf database
-b) show ip ospf neighbor  ----
-c) show ip route ospf
-d) show ip protocols
+### A6. Pourquoi recommande-t-on une interface loopback pour fixer le Router-ID ?
+
+- a) Elle est toujours active, ce qui le stabilise
+- b) Elle est plus rapide
+- c) Elle consomme moins de mémoire
+- d) C'est obligatoire pour OSPF **X**
+
+### A7. Quel est le rôle du DR (Designated Router) sur un segment multi-accès ?
+
+- a) Répartir la charge du trafic
+- b) Centraliser les échanges LSA pour réduire le nombre d'adjacences **X**
+- c) Chiffrer le trafic OSPF
+- d) Remplacer le Router-ID
+
+### A8. Sur un lien point-à-point, l'élection DR/BDR a-t-elle lieu ?
+
+- a) Oui, systématiquement
+- b) Non, elle n'a pas de sens sur ce type de lien
+- c) Seulement si configurée manuellement **X**
+- d) Seulement en IPv6
+
+### A9. Valeurs par défaut des timers Hello/Dead sur un réseau broadcast (Ethernet) ?
+
+- a) 5s / 20s **X**
+- b) 10s / 40s
+- c) 30s / 120s
+- d) 60s / 180s
+
+### A10. Que se passe-t-il si les timers Hello/Dead diffèrent entre deux voisins ?
+
+- a) L'adjacence se forme quand même
+- b) L'adjacence ne peut pas se former **X**
+- c) Seul le Hello timer compte
+- d) OSPF ignore cette différence
+
+### A11. Quel état de voisinage OSPF indique une adjacence pleinement établie ?
+
+- a) 2-Way
+- b) ExStart
+- c) Full **X**
+- d) Loading
+
+### A12. Quel type de LSA décrit les liens directement connectés d'un routeur ?
+
+- a) Router LSA (type 1)
+- b) Network LSA
+- c) Summary LSA **X**
+- d) External LSA
+
+### A13. Quelle commande affiche l'état des adjacences OSPF ?
+
+- a) show ip ospf database
+- b) show ip ospf neighbor **X**
+- c) show ip route ospf
+- d) show ip protocols
 
 A14. Lequel de ces critères N'EMPÊCHE PAS la formation d'une adjacence OSPF s'il diffère ?
 a) Area ID
