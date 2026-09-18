@@ -7,9 +7,9 @@
 ### A1. OSPF appartient à quelle catégorie de protocole de routage ?
 
 - a) Vecteur de distance
-- b) État de liens
+- b) État de liens **X**
 - c) Hybride
-- d) Vecteur de chemin **X**
+- d) Vecteur de chemin 
 
 ### A2. Quel algorithme utilise OSPF pour calculer le meilleur chemin ?
 
