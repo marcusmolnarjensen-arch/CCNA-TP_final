@@ -10,7 +10,7 @@
 |---|---|
 | **Étudiant** | Marcus - Formation CFC + Bachelor, IT Infrastructure & Networking |
 | **Plateforme** | PNetLab |
-| **Périmètre réalisé** | Phases 1 à 3 (65% du barème) |
+| **Périmètre réalisé** | Phases 1 à 3 |
 | **Non traité** | Phase 4 (NAT), Phase 5 (Audit final) - justification en section 6 |
 
 ### Sommaire
