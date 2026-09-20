@@ -2,7 +2,7 @@
 
 ## Déploiement réseau évolutif d'un site d'entreprise
 
-![Statut](https://img.shields.io/badge/statut-65%25_complet-yellow) ![Plateforme](https://img.shields.io/badge/plateforme-PNetLab-blue) ![OSPF](https://img.shields.io/badge/OSPF-valide-brightgreen) ![Securite](https://img.shields.io/badge/securite_L2%2FSSH-valide-brightgreen) ![ACL](https://img.shields.io/badge/ACL-valide-brightgreen) ![NAT](https://img.shields.io/badge/NAT-non_traite-lightgrey) ![Audit](https://img.shields.io/badge/audit_final-non_traite-lightgrey)
+![Statut](https://img.shields.io/badge/statut-phases_1_a_3-yellow) ![Plateforme](https://img.shields.io/badge/plateforme-PNetLab-blue) ![OSPF](https://img.shields.io/badge/OSPF-valide-brightgreen) ![Securite](https://img.shields.io/badge/securite_L2%2FSSH-valide-brightgreen) ![ACL](https://img.shields.io/badge/ACL-valide-brightgreen) ![NAT](https://img.shields.io/badge/NAT-non_traite-lightgrey) ![Audit](https://img.shields.io/badge/audit_final-non_traite-lightgrey)
 
 **Satom IT & Learning Solutions · Geneva Institute of Technology (GIT)**
 
@@ -189,7 +189,7 @@ Ping VPC (Invités) → 192.168.20.1 refusé (ICMP administratively prohibited)
 
 ## 6. Phases 4 et 5 - Non traitées
 
-Par choix assumé, seules les Phases 1 à 3 ont été réalisées (65% du barème).
+Par choix assumé, seules les Phases 1 à 3 ont été réalisées.
 
 **Phase 4 (NAT)** - non réalisée. Un doute est apparu sur la cohérence entre l'interface reliée au cloud « Net » et l'environnement réseau réel de la plateforme PNetLab ; plutôt que de risquer d'altérer une configuration fonctionnelle et validée (Phases 1 à 3), le choix a été fait de ne pas toucher à cette partie.
 
