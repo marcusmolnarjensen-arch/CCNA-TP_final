@@ -150,11 +150,14 @@ les captures sont deja plus haut je ne vais pas les remettre pour que ça reste 
 
 ---
 
-5. Sauvegarde des configurations
+## 5. Sauvegarde des configurations
 
-"write memory" exécuté sur les 5 équipements (R1, R2, R3, SW1, SW2) après validation de chaque phase.
+`write memory` exécuté sur les 5 équipements (R1, R2, R3, SW1, SW2) après validation de chaque phase.
 
----------------------------------------------------------------------------------------------
+---
+
+### R1
+```cisco
 R1#show running-config
 Building configuration...
 
@@ -272,7 +275,12 @@ line vty 0 4
 !
 !
 end
----------------------------------------------------------------------------------------------
+```
+
+---
+
+### R2
+```cisco
 R2#show running-config
 Building configuration...
 
@@ -405,7 +413,12 @@ line vty 0 4
 !
 !
 end
----------------------------------------------------------------------------------------------
+```
+
+---
+
+### R3
+```cisco
 R3#show running-config
 Building configuration...
 
@@ -527,8 +540,12 @@ line vty 0 4
 !
 !
 end
+```
 
----------------------------------------------------------------------------------------------
+---
+
+### SW1
+```cisco
 SW1#show running-config
 Building configuration...
 
@@ -645,7 +662,12 @@ line vty 0 4
  transport input ssh
 !
 end
----------------------------------------------------------------------------------------------
+```
+
+---
+
+### SW2
+```cisco
 SW2#show running-config
 Building configuration...
 
@@ -727,8 +749,7 @@ line vty 0 4
  login
 !
 end
----------------------------------------------------------------------------------------------
----
+```
 
 ## 6. Phases 4 et 5 - Non traitées
 
