@@ -28,8 +28,7 @@
 
 Topologie physique utilisée sur PNetLab, adaptée du plan de référence du TP : câblage point-à-point R1↔R2 et R1↔R3, sans switch intermédiaire sur le backbone.
 
-**CAPTURE A INSERER ICI**
-Vue complète de la topologie PNetLab (R1, R2, R3, SW1, SW2, VPC7, VPC, VPC-Admin, cloud Net)
+<img width="628" height="679" alt="image" src="https://github.com/user-attachments/assets/df589d7a-df03-419e-8777-00b612c115ff" />
 
 ### Correspondance des rôles
 
@@ -52,63 +51,62 @@ Vue complète de la topologie PNetLab (R1, R2, R3, SW1, SW2, VPC7, VPC, VPC-Admi
 
 ### 2.1 Adjacences OSPF
 
-**CAPTURE A INSERER ICI**
-`show ip ospf neighbor` sur R1 - 2 voisins attendus, état FULL
+R1
+<img width="687" height="114" alt="image" src="https://github.com/user-attachments/assets/ad4c8eb0-30de-4f27-8e4a-e68141b8e32a" />
 
-**CAPTURE A INSERER ICI**
-`show ip ospf neighbor` sur R2 - 1 voisin attendu, état FULL
+R2
+<img width="666" height="91" alt="image" src="https://github.com/user-attachments/assets/5c980d49-30c8-4f86-9962-22ad49263977" />
 
-**CAPTURE A INSERER ICI**
-`show ip ospf neighbor` sur R3 - 1 voisin attendu, état FULL
+R3
+<img width="668" height="83" alt="image" src="https://github.com/user-attachments/assets/eb78ee13-1849-48b8-a786-1fff5dcf1300" />
 
 ### 2.2 Routes apprises dynamiquement
 
-**CAPTURE A INSERER ICI**
-`show ip route ospf` sur R2 - doit voir les réseaux de R3
+R2
+<img width="660" height="373" alt="image" src="https://github.com/user-attachments/assets/11deebf2-4cc6-47a1-95f4-12134f1866e1" />
 
-**CAPTURE A INSERER ICI**
-`show ip route ospf` sur R3 - doit voir les réseaux de R2
+R3
+<img width="648" height="325" alt="image" src="https://github.com/user-attachments/assets/0c9d9ebb-c7c2-40ab-87bd-ae0f27081477" />
 
 ### 2.3 Interfaces passives
 
 **CAPTURE A INSERER ICI**
-`show ip protocols | section Passive` sur R2 et R3
+R2 et R3
+R2: <img width="323" height="103" alt="image" src="https://github.com/user-attachments/assets/cc678361-4597-4d6b-9076-c3f6b1411d21" />
+
+R3: <img width="310" height="80" alt="image" src="https://github.com/user-attachments/assets/1c4f7a34-8e2b-41a9-818b-575b59c1f361" />
 
 ### 2.4 Authentification MD5
 
-**CAPTURE A INSERER ICI**
-`show ip ospf interface FastEthernet0/0 | include Auth` sur R1
+<img width="456" height="50" alt="image" src="https://github.com/user-attachments/assets/a155e874-e8d5-45cf-bb91-e2e862816583" />
 
 ### 2.5 Test de connectivité bout-en-bout
 
-Ping depuis VPC7 (192.168.10.10, aile Formation) vers 192.168.20.1 (R3, aile Administration) : le trafic traverse SW1 → R2 → R1 → R3, preuve que le routage OSPF fonctionne sur l'ensemble du site.
+Ping depuis VPC7 (192.168.10.10, aile Formation) vers 192.168.20.1 (R3, aile Administration) le trafic traverse SW1  R2  R1  R3, preuve que le routage OSPF fonctionne sur l'ensemble du site.
 
-**CAPTURE A INSERER ICI**
-Ping VPC7 → 192.168.20.1 réussi (ttl=253, 2 sauts)
+<img width="536" height="252" alt="image" src="https://github.com/user-attachments/assets/e2de89a1-9964-43ef-93d6-9133acbc616f" />
 
-**CAPTURE A INSERER ICI**
-Ping VPC-Admin → 192.168.20.1 réussi (ttl=255, réseau local)
+Ping invité - admin refusé.
+<img width="918" height="174" alt="image" src="https://github.com/user-attachments/assets/5442c99f-ef3c-4933-a131-8c550f4ad9b7" />
 
 ---
 
 ## 3. Phase 2 - Sécurisation des accès et de la couche 2
 
-> Accès administratif restreint au SSHv2 avec compte nominatif sur les trois routeurs (Telnet désactivé). Port security activé sur les ports d'accès de SW1 et SW2 (1 MAC max, apprentissage sticky, violation → shutdown). DHCP snooping activé sur le VLAN 10 de SW1, port montant vers R2 déclaré de confiance.
+Accès administratif restreint au SSHv2 avec compte nominatif sur les trois routeurs (Telnet désactivé). Port security activé sur les ports d'accès de SW1 et SW2 (1 MAC max, apprentissage sticky, violation → shutdown). DHCP snooping activé sur le VLAN 10 de SW1, port montant vers R2 déclaré de confiance.
 
 ### 3.1 SSH actif, Telnet désactivé
 
-**CAPTURE A INSERER ICI**
-`show ip ssh` sur R1 - SSH version 2.0 activé
+<img width="658" height="171" alt="image" src="https://github.com/user-attachments/assets/0c18b268-4ad2-4fa3-b23d-dad83b5c0908" />
 
 ### 3.2 Port security - cycle complet
 
-Démonstration du cycle complet : violation de sécurité déclenchée → port passé en err-disabled → relève manuelle du port.
+Démonstration du cycle complet violation de sécurité déclenchée  port passé en err-disabled  relève manuelle du port.
 
-**CAPTURE A INSERER ICI**
-`show port-security interface e0/1` sur SW1 - état Secure-up, Maximum 1, MAC sticky apprise
+<img width="394" height="234" alt="image" src="https://github.com/user-attachments/assets/b4bbb906-f614-4d3e-9367-f8113728d409" />
 
-**CAPTURE A INSERER ICI**
 Log de violation déclenchée (`%PORT_SECURITY-2-PSECURE_VIOLATION`) et passage en err-disabled
+<img width="310" height="68" alt="image" src="https://github.com/user-attachments/assets/a09c0d80-0016-46ca-a8c3-441214b5490b" />
 
 **CAPTURE A INSERER ICI**
 `show interfaces e0/1 status` après relève (shutdown / no shutdown) - retour à l'état connected
