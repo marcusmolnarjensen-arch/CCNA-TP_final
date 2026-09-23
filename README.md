@@ -150,7 +150,7 @@ les captures sont deja plus haut je ne vais pas les remettre pour que ça reste 
 
 ---
 
-## 5. Sauvegarde des configurations
+5. Sauvegarde des configurations
 
 "write memory" exécuté sur les 5 équipements (R1, R2, R3, SW1, SW2) après validation de chaque phase.
 
