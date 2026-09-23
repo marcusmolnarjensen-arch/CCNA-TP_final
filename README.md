@@ -93,7 +93,7 @@ Ping invité - admin refusé.
 
 ## 3. Phase 2 - Sécurisation des accès et de la couche 2
 
-Accès administratif restreint au SSHv2 avec compte nominatif sur les trois routeurs (Telnet désactivé). Port security activé sur les ports d'accès de SW1 et SW2 (1 MAC max, apprentissage sticky, violation → shutdown). DHCP snooping activé sur le VLAN 10 de SW1, port montant vers R2 déclaré de confiance.
+Accès administratif restreint au SSHv2 avec compte nominatif sur les trois routeurs (Telnet désactivé). Port security activé sur les ports d'accès de SW1 et SW2 (1 MAC max, apprentissage sticky, violation - shutdown). DHCP snooping activé sur le VLAN 10 de SW1, port montant vers R2 déclaré de confiance.
 
 ### 3.1 SSH actif, Telnet désactivé
 
@@ -105,87 +105,630 @@ Démonstration du cycle complet violation de sécurité déclenchée  port pass�
 
 <img width="394" height="234" alt="image" src="https://github.com/user-attachments/assets/b4bbb906-f614-4d3e-9367-f8113728d409" />
 
-Log de violation déclenchée (`%PORT_SECURITY-2-PSECURE_VIOLATION`) et passage en err-disabled
+Log de violation déclenchée ("%PORT_SECURITY-2-PSECURE_VIOLATION") et passage en err-disabled
 <img width="277" height="80" alt="image" src="https://github.com/user-attachments/assets/6157b22d-c657-406f-8779-48c843021d90" />
 
 <img width="310" height="68" alt="image" src="https://github.com/user-attachments/assets/a09c0d80-0016-46ca-a8c3-441214b5490b" />
-<img width="815" height="54" alt="image" src="https://github.com/user-attachments/assets/4b0c5b26-4f32-4a96-a5a3-b39749aaec5d" />
-
-**CAPTURE A INSERER ICI**
-`show interfaces e0/1 status` après relève (shutdown / no shutdown) - retour à l'état connected
+<img width="868" height="97" alt="image" src="https://github.com/user-attachments/assets/dab28c97-8005-4b92-932e-4312cfa32099" />
 
 ### 3.3 DHCP Snooping
 
-**CAPTURE A INSERER ICI**
-`show ip dhcp snooping` sur SW1 - VLAN 10 surveillé, port montant trusted
+<img width="583" height="355" alt="image" src="https://github.com/user-attachments/assets/2782484c-ec8c-4d46-ae6b-191f1381d9f0" />
 
-**CAPTURE A INSERER ICI**
-`show ip dhcp snooping binding` sur SW1
+<img width="749" height="181" alt="image" src="https://github.com/user-attachments/assets/a936321f-e4ed-4186-beac-6ee738dd6d67" />
 
 ### 3.4 Procédure de relève d'un port err-disabled
 
-1. Identifier le port concerné : `show interfaces status | include err-disabled`
+1. Identifier le port concerné : "show interfaces status | include err-disabled"
 2. Retirer ou identifier l'appareil non autorisé à l'origine de la violation
-3. Relever le port : `interface e0/x` → `shutdown` → `no shutdown`
-4. Vérifier le retour à l'état Secure-up : `show port-security interface e0/x`
+3. Relever le port : "interface e0/x" - "shutdown" - "no shutdown"
+4. Vérifier le retour à l'état Secure-up : "show port-security interface e0/x"
 
 ---
 
 ## 4. Phase 3 - Filtrage réseau par ACL
 
-> Trois ACL nommées mises en place : `ADMIN-ONLY` (standard, restreint l'accès SSH au seul poste 192.168.20.10, appliquée sur les lignes VTY des 3 routeurs via `access-class`), `INVITES-ONLY` (étendue, restreint le VLAN 99 au Web et au DNS, appliquée sur la sous-interface G0/0.99 de R2 en entrée), et une ligne de blocage RDP explicite.
+> Trois ACL nommées mises en place : "ADMIN-ONLY" (standard, restreint l'accès SSH au seul poste 192.168.20.10, appliquée sur les lignes VTY des 3 routeurs via "access-class"), "INVITES-ONLY" (étendue, restreint le VLAN 99 au Web et au DNS, appliquée sur la sous-interface G0/0.99 de R2 en entrée), et une ligne de blocage RDP explicite.
 
 ### 4.1 Calcul des wildcard masks utilisés
 
 | Réseau / hôte | Masque | Wildcard | Calcul |
 |---|---|---|---|
 | 192.168.99.0/24 (Invités) | 255.255.255.0 | 0.0.0.255 | 255.255.255.255 − 255.255.255.0 |
-| 192.168.20.10 (PC-Admin, hôte unique) | 255.255.255.255 (/32) | 0.0.0.0 (mot-clé `host`) | Inversion bit à bit d'un masque /32 |
+| 192.168.20.10 (PC-Admin, hôte unique) | 255.255.255.255 (/32) | 0.0.0.0 (mot-clé "host") | Inversion bit à bit d'un masque /32 |
 
 ### 4.2 Justification du placement des ACL
 
-- **ADMIN-ONLY** est appliquée sur les lignes VTY (`access-class`) car elle filtre l'accès administratif au routeur lui-même, pas du trafic qui transite.
+- **ADMIN-ONLY** est appliquée sur les lignes VTY ("access-class") car elle filtre l'accès administratif au routeur lui-même, pas du trafic qui transite.
 - **INVITES-ONLY** est posée sur la sous-interface G0/0.99 de R2, au plus près de la source du VLAN Invités : le trafic non autorisé est rejeté dès son entrée dans le réseau, sans consommer de ressources sur les liens backbone.
 
 ### 4.3 Test - accès SSH restreint
 
-Tentative de connexion SSH vers R1 depuis une adresse source différente de 192.168.20.10 (test réalisé depuis R2, faute de client SSH natif sur l'émulateur VPCS utilisé pour les postes) :
-
-**CAPTURE A INSERER ICI**
-Connexion SSH refusée depuis R2 (`% Connection refused by remote host`)
-
-**CAPTURE A INSERER ICI**
-Log `%SEC-6-IPACCESSLOGNP` confirmant le rejet par la ligne deny de l'ACL ADMIN-ONLY
-
-**CAPTURE A INSERER ICI**
-`show access-lists ADMIN-ONLY` - compteur de matches sur la ligne deny
 
 ### 4.4 Test - isolation du VLAN Invités
 
-**CAPTURE A INSERER ICI**
-Ping VPC (Invités) → 192.168.20.1 refusé (ICMP administratively prohibited)
+les captures sont deja plus haut je ne vais pas les remettre pour que ça reste lisible
 
 ---
 
 ## 5. Sauvegarde des configurations
 
-`write memory` exécuté sur les 5 équipements (R1, R2, R3, SW1, SW2) après validation de chaque phase.
+"write memory" exécuté sur les 5 équipements (R1, R2, R3, SW1, SW2) après validation de chaque phase.
 
-**CAPTURE A INSERER ICI**
-`show running-config` de R1
+---------------------------------------------------------------------------------------------
+R1#show running-config
+Building configuration...
 
-**CAPTURE A INSERER ICI**
-`show running-config` de R2
+Current configuration : 1373 bytes
+!
+upgrade fpd auto
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname R1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip domain name git.local
+ip cef
+no ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+!
+!
+username marcus privilege 15 secret 5 $1$zvgx$DPzBfK4H7xjX8J/96qf/E0
+!
+redundancy
+!
+!
+ip ssh time-out 60
+ip ssh version 2
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ ip address 1.1.1.1 255.255.255.255
+ ip ospf 1 area 0
+!
+interface FastEthernet0/0
+ description Backbone-R2
+ ip address 10.0.12.1 255.255.255.252
+ ip ospf authentication message-digest
+ ip ospf message-digest-key 1 md5 cisco
+ ip ospf 1 area 0
+ duplex half
+!
+interface FastEthernet1/0
+ description Backbone-R3
+ ip address 10.0.13.1 255.255.255.252
+ ip ospf authentication message-digest
+ ip ospf message-digest-key 1 md5 cisco
+ ip ospf 1 area 0
+ duplex half
+!
+router ospf 1
+ router-id 1.1.1.1
+!
+ip forward-protocol nd
+no ip http server
+no ip http secure-server
+!
+!
+!
+ip access-list standard ADMIN-ONLY
+ permit 192.168.20.10
+ deny   any log
+!
+!
+!
+!
+control-plane
+!
+!
+!
+mgcp profile default
+!
+!
+!
+gatekeeper
+ shutdown
+!
+!
+line con 0
+ stopbits 1
+line aux 0
+ stopbits 1
+line vty 0 4
+ access-class ADMIN-ONLY in
+ exec-timeout 5 0
+ login local
+ transport input ssh
+!
+!
+end
+---------------------------------------------------------------------------------------------
+R2#show running-config
+Building configuration...
 
-**CAPTURE A INSERER ICI**
-`show running-config` de R3
+Current configuration : 1760 bytes
+!
+upgrade fpd auto
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname R2
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip domain name git.local
+ip cef
+no ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+!
+!
+username marcus privilege 15 secret 5 $1$l2en$NsEptK0Z/GjxSKNks8pCL1
+!
+redundancy
+!
+!
+ip ssh time-out 60
+ip ssh version 2
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ ip address 2.2.2.2 255.255.255.255
+ ip ospf 1 area 0
+!
+interface FastEthernet0/0
+ description Backbone-R1
+ ip address 10.0.12.2 255.255.255.252
+ ip ospf authentication message-digest
+ ip ospf message-digest-key 1 md5 cisco
+ ip ospf 1 area 0
+ duplex half
+!
+interface FastEthernet1/0
+ no ip address
+ duplex half
+!
+interface FastEthernet1/0.10
+ encapsulation dot1Q 10
+ ip address 192.168.10.1 255.255.255.0
+ ip ospf 1 area 0
+!
+interface FastEthernet1/0.99
+ encapsulation dot1Q 99
+ ip address 192.168.99.1 255.255.255.0
+ ip access-group INVITES-ONLY in
+ ip ospf 1 area 0
+!
+router ospf 1
+ router-id 2.2.2.2
+ passive-interface FastEthernet1/0.10
+ passive-interface FastEthernet1/0.99
+!
+ip forward-protocol nd
+no ip http server
+no ip http secure-server
+!
+!
+!
+ip access-list standard ADMIN-ONLY
+ permit 192.168.20.10
+ deny   any log
+!
+ip access-list extended INVITES-ONLY
+ permit tcp 192.168.99.0 0.0.0.255 any eq www
+ permit tcp 192.168.99.0 0.0.0.255 any eq 443
+ permit udp 192.168.99.0 0.0.0.255 any eq domain
+ deny   ip any any
+!
+!
+!
+!
+control-plane
+!
+!
+!
+mgcp profile default
+!
+!
+!
+gatekeeper
+ shutdown
+!
+!
+line con 0
+ stopbits 1
+line aux 0
+ stopbits 1
+line vty 0 4
+ access-class ADMIN-ONLY in
+ exec-timeout 5 0
+ login local
+ transport input ssh
+!
+!
+end
+---------------------------------------------------------------------------------------------
+R3#show running-config
+Building configuration...
 
-**CAPTURE A INSERER ICI**
-`show running-config` de SW1
+Current configuration : 1395 bytes
+!
+upgrade fpd auto
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname R3
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip domain name git.local
+ip cef
+no ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+!
+!
+username marcus privilege 15 secret 5 $1$qpqt$kwb45Zt5B5xTB20NWBPPe1
+!
+redundancy
+!
+!
+ip ssh time-out 60
+ip ssh version 2
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ ip address 3.3.3.3 255.255.255.255
+ ip ospf 1 area 0
+!
+interface FastEthernet0/0
+ description Backbone-R1
+ ip address 10.0.13.2 255.255.255.252
+ ip ospf authentication message-digest
+ ip ospf message-digest-key 1 md5 cisco
+ ip ospf 1 area 0
+ duplex half
+!
+interface FastEthernet1/0
+ description VLAN-ADMIN
+ ip address 192.168.20.1 255.255.255.0
+ ip ospf 1 area 0
+ duplex half
+!
+interface FastEthernet2/0
+ no ip address
+ shutdown
+ duplex half
+!
+router ospf 1
+ router-id 3.3.3.3
+ passive-interface FastEthernet1/0
+!
+ip forward-protocol nd
+no ip http server
+no ip http secure-server
+!
+!
+!
+ip access-list standard ADMIN-ONLY
+ permit 192.168.20.10
+ deny   any log
+!
+!
+!
+!
+control-plane
+!
+!
+!
+mgcp profile default
+!
+!
+!
+gatekeeper
+ shutdown
+!
+!
+line con 0
+ stopbits 1
+line aux 0
+ stopbits 1
+line vty 0 4
+ access-class ADMIN-ONLY in
+ exec-timeout 5 0
+ login local
+ transport input ssh
+!
+!
+end
 
-**CAPTURE A INSERER ICI**
-`show running-config` de SW2
+---------------------------------------------------------------------------------------------
+SW1#show running-config
+Building configuration...
 
+Current configuration : 1838 bytes
+!
+version 15.1
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+service compress-config
+!
+hostname SW1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+username marcus privilege 15 secret 4 06YFDUHH61wAE/kLkDq9BGho1QM5EnRtoyr8cHAUg.2
+no aaa new-model
+no ipv6 cef
+ipv6 multicast rpf use-bgp
+!
+no ip domain-lookup
+ip domain-name git.local
+ip cef
+!
+!
+ip dhcp snooping vlan 10
+no ip dhcp snooping information option
+ip dhcp snooping
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+!
+!
+!
+vlan internal allocation policy ascending
+!
+ip ssh time-out 60
+ip ssh version 2
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ ip address 1.1.1.1 255.255.255.255
+ ip ospf 1 area 0
+!
+interface Ethernet0/0
+ description Backbone-R2
+ switchport trunk encapsulation dot1q
+ switchport trunk allowed vlan 10,99
+ switchport mode trunk
+ duplex auto
+ ip dhcp snooping trust
+!
+interface Ethernet0/1
+ description PC-SALLE-INFO
+ switchport access vlan 10
+ switchport trunk encapsulation dot1q
+ switchport trunk allowed vlan 12,13
+ switchport mode access
+ switchport port-security
+ switchport port-security mac-address 0050.7966.6807
+ duplex auto
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+!
+interface Ethernet0/2
+ switchport access vlan 99
+ switchport trunk encapsulation dot1q
+ switchport trunk allowed vlan 10,12,99
+ switchport mode access
+ duplex auto
+ ip dhcp snooping trust
+!
+interface Ethernet0/3
+ switchport trunk encapsulation dot1q
+ switchport trunk allowed vlan 13
+ switchport mode trunk
+ duplex auto
+!
+router ospf 1
+ router-id 1.1.1.1
+!
+!
+no ip http server
+!
+!
+!
+ip access-list standard ADMIN-ONLY
+ permit 192.168.20.10
+!
+!
+!
+control-plane
+!
+!
+line con 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ access-class ADMIN-ONLY in
+ exec-timeout 5 0
+ login local
+ transport input ssh
+!
+end
+---------------------------------------------------------------------------------------------
+SW2#show running-config
+Building configuration...
+
+Current configuration : 905 bytes
+!
+version 15.1
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+service compress-config
+!
+hostname SW2
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+no ipv6 cef
+ipv6 multicast rpf use-bgp
+!
+ip cef
+!
+!
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+!
+!
+!
+vlan internal allocation policy ascending
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Ethernet0/0
+ switchport access vlan 20
+ switchport mode access
+ duplex auto
+!
+interface Ethernet0/1
+ switchport access vlan 20
+ switchport mode access
+ switchport port-security
+ switchport port-security mac-address 0050.7966.6806
+ duplex auto
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+!
+interface Ethernet0/2
+ duplex auto
+!
+interface Ethernet0/3
+ duplex auto
+!
+!
+no ip http server
+!
+!
+!
+!
+!
+control-plane
+!
+!
+line con 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ login
+!
+end
+---------------------------------------------------------------------------------------------
 ---
 
 ## 6. Phases 4 et 5 - Non traitées
