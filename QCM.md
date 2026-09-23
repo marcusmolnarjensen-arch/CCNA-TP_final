@@ -119,8 +119,8 @@ j'ai mis une croix devant la reponse
 ### A17. Dans `network 10.0.12.0 0.0.0.3 area 0`, que représente `0.0.0.3` ?
 
 * a) Un masque de sous-réseau classique
-* b) Un wildcard mask
-* c) Une adresse de broadcast **X**
+* b) Un wildcard mask **X**
+* c) Une adresse de broadcast 
 * d) Un ID de zone
 
 ---
@@ -130,8 +130,8 @@ j'ai mis une croix devant la reponse
 ### B1. Dans `router ospf 1`, que représente le « 1 » ?
 
 * a) L'area ID
-* b) Le process ID, localement significatif au routeur
-* c) Le Router-ID **X**
+* b) Le process ID, localement significatif au routeur **X**
+* c) Le Router-ID 
 * d) Le numéro d'AS
 
 ### B2. Le process ID OSPF doit-il être identique sur tous les routeurs du domaine ?
