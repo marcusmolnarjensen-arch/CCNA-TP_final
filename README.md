@@ -106,7 +106,10 @@ Démonstration du cycle complet violation de sécurité déclenchée  port pass�
 <img width="394" height="234" alt="image" src="https://github.com/user-attachments/assets/b4bbb906-f614-4d3e-9367-f8113728d409" />
 
 Log de violation déclenchée (`%PORT_SECURITY-2-PSECURE_VIOLATION`) et passage en err-disabled
+<img width="277" height="80" alt="image" src="https://github.com/user-attachments/assets/6157b22d-c657-406f-8779-48c843021d90" />
+
 <img width="310" height="68" alt="image" src="https://github.com/user-attachments/assets/a09c0d80-0016-46ca-a8c3-441214b5490b" />
+<img width="815" height="54" alt="image" src="https://github.com/user-attachments/assets/4b0c5b26-4f32-4a96-a5a3-b39749aaec5d" />
 
 **CAPTURE A INSERER ICI**
 `show interfaces e0/1 status` après relève (shutdown / no shutdown) - retour à l'état connected
