@@ -70,7 +70,6 @@ R3
 
 ### 2.3 Interfaces passives
 
-**CAPTURE A INSERER ICI**
 R2 et R3
 R2: <img width="323" height="103" alt="image" src="https://github.com/user-attachments/assets/cc678361-4597-4d6b-9076-c3f6b1411d21" />
 
