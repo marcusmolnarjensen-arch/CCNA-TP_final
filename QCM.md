@@ -1,7 +1,7 @@
 # QCM_CCNA_TP-FINAL
 
 ### Étape 1
-
+j'ai mis une croix devant la reponse
 ## Catégorie A — OSPF
 
 ### A1. OSPF appartient à quelle catégorie de protocole de routage ?
